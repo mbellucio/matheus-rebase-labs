@@ -1,0 +1,17 @@
+services:
+  app:
+      image: ruby:3.3.0
+      container_name: rebase_api
+      working_dir: /app
+      ports:
+        - "3000:3000"
+      volumes:
+        - .:/app
+      command: bash -c 'bundle install && ruby db/db_init.rb && ruby api/server.rb'
+  db:
+    image: postgres
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: railsdbmigrate
+      POSTGRES_DB: labsdb
