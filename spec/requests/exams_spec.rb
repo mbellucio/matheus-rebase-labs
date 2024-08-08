@@ -10,11 +10,20 @@ describe '/tests' do
 
     get '/tests'
 
-    expect(last_response).to be_ok
-    json_response = JSON.parse(last_response.body)
+    expect(response.status).to eq 200
+    json_response = JSON.parse(response.body)
 
-    expect(json_response.length).to eq(2)
-    expect(json_response[0]['cpf']).to eq('123123')
-    expect(json_response[1]['cpf']).to eq('8912738')
+    expect(json_response.length).to eq(3)
+    expect(json_response[0]['cpf']).to eq('048.973.170-88')
+    expect(json_response[1]['cpf']).to eq('048.973.170-88')
+    expect(json_response[2]['cpf']).to eq('048.973.170-88')
+
+    expect(json_response[0]['exam_type']).to eq('hemácias')
+    expect(json_response[1]['exam_type']).to eq('leucócitos')
+    expect(json_response[2]['exam_type']).to eq('plaquetas')
+
+    expect(json_response[0]['exam_result']).to eq('97')
+    expect(json_response[1]['exam_result']).to eq('89')
+    expect(json_response[2]['exam_result']).to eq('97')
   end
 end

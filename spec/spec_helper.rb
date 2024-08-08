@@ -1,16 +1,23 @@
 require 'rack/test'
-require 'rspec'
-require 'sinatra/base'
 require_relative '../api/server'
 
-module RSpecMixin
-  include Rack::Test::Methods
+RSpec.configure do |config|
+  config.expect_with :rspec do |expectations|
+    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+  end
+
+  config.mock_with :rspec do |mocks|
+    mocks.verify_partial_doubles = true
+  end
+
+  config.include Rack::Test::Methods
+  config.before do
+    header 'Content-Type', 'application/json'
+  end
 
   def app
     Sinatra::Application
   end
-end
 
-RSpec.configure do |config|
-  config.include RSpecMixin
+  config.shared_context_metadata_behavior = :apply_to_host_groups
 end

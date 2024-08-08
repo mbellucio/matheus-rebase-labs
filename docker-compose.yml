@@ -23,8 +23,10 @@ services:
     image: ruby:3.3.0
     container_name: rebase_test
     working_dir: /app
+    environment:
+      - RACK_ENV=test
     volumes:
         - .:/app
-    command: bash -c 'bundle install --without production && rspec'
+    command: bash -c 'bundle install --without production && bundle exec rspec'
     depends_on:
       - db
