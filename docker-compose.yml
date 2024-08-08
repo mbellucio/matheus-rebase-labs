@@ -1,13 +1,16 @@
 services:
   app:
-      image: ruby:3.3.0
-      container_name: rebase_api
-      working_dir: /app
-      ports:
-        - "3000:3000"
-      volumes:
-        - .:/app
-      command: bash -c 'bundle install && ruby db/db_init.rb && ruby api/server.rb'
+    image: ruby:3.3.0
+    container_name: rebase_api
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    command: bash -c 'bundle install && ruby db/db_init.rb && ruby api/server.rb'
+    depends_on:
+      - db
+
   db:
     image: postgres
     container_name: postgres_db
@@ -15,3 +18,13 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: railsdbmigrate
       POSTGRES_DB: labsdb
+
+  test: 
+    image: ruby:3.3.0
+    container_name: rebase_test
+    working_dir: /app
+    volumes:
+        - .:/app
+    command: bash -c 'bundle install --without production && rspec'
+    depends_on:
+      - db

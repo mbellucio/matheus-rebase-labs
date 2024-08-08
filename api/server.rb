@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
+require_relative 'medical_exam'
 require 'sinatra'
 require 'rack/handler/puma'
-require 'pg'
-
-conn = PG.connect(host: 'postgres_db', dbname: 'labsdb', user: 'admin', password: 'railsdbmigrate')
 
 get '/tests' do
   begin
-    result = conn.exec('SELECT * FROM medical_exams_view')
-    result.map { |row| row }.to_json
+    MedicalExam.all
   rescue PG::Error => e
     status 500
     { error: e.message }.to_json
