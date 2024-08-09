@@ -26,6 +26,8 @@ conn.exec("
   )
 ")
 
+conn.exec("CREATE TABLE medical_exams_test AS SELECT * FROM medical_exams LIMIT 0;")
+
 rows = CSV.read('db/data.csv', col_sep: ';')
 rows.shift
 
