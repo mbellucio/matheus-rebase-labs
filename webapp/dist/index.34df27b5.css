@@ -42,4 +42,8 @@
     transform: rotate(360deg);
   }
 }
+
+.hidden {
+  display: none;
+}
 /*# sourceMappingURL=index.34df27b5.css.map */

@@ -1,36 +1,16 @@
-const examsSection = document.querySelector("#exams");
+import * as model from "./model.js";
+import examsView from "./views/examsView.js";
 
-const renderSpinner = function (parentElem) {
-  const markup = `
-    <div class="loading"></div>
-  `;
-  parentElem.innerHTML = "";
-  parentElem.insertAdjacentHTML("afterBegin", markup);
-};
-
-const getExams = async function () {
+const controlExams = async function () {
   try {
-    renderSpinner(examsSection);
+    examsView.renderSpinner();
 
-    const response = await fetch("http://localhost:3000/exams");
-    const data = await response.json();
-    if (!response.ok) throw new Error(`${data.message} (${response.status})`);
+    await model.loadExams();
 
-    const markup = (exam) => `
-      <div id="exam" class="d-flex my-2 justify-content-center align-items-center shadow border rounded-3">
-        <p class="me-2">${exam.exam_token}</p>
-        <p class="me-2">${exam.patient_name}</p>
-        <p>${exam.medic_name}</p>
-      </div>
-    `;
-
-    examsSection.innerHTML = "";
-    data.forEach((exam) => {
-      examsSection.insertAdjacentHTML("afterBegin", markup(exam));
-    });
+    examsView.renderList(model.state.exams);
   } catch (error) {
     alert(error);
   }
 };
 
-getExams();
+controlExams();
