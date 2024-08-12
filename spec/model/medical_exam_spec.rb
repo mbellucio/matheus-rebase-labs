@@ -10,7 +10,7 @@ describe 'MedicalExam' do
     @medical_exam.clear
   end
 
-  context ".all" do
+  context ".all && .create" do
     it 'Return all exams' do
       @medical_exam.create(cpf: "12312312", patient_name: "name 1", patient_mail: "mail1@mail.com",
                            patient_birthdate: "01-01-01", patient_adress: "adress 1", patient_city: "city 1",
