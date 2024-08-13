@@ -1,32 +1,22 @@
-class ExamsView {
-  #parentElement = document.querySelector("#exams");
-  #data;
+import View from "./View.js";
+
+class ExamsView extends View {
+  _parentElement = document.querySelector("#exams");
+  _alertElement = document.querySelector("#alert");
 
   renderList(data) {
-    this.#data = data;
-    this.#clear();
+    this._data = data;
+    this.clear();
 
-    this.#data.forEach((exam) => {
-      this.#parentElement.insertAdjacentHTML(
-        "afterBegin",
-        this.#generateMarkup(exam)
+    this._data.forEach((exam) => {
+      this._parentElement.insertAdjacentHTML(
+        "beforeEnd",
+        this._generateMarkup(exam)
       );
     });
   }
 
-  renderSpinner = function () {
-    const markup = `
-      <div class="loading"></div>
-    `;
-    this.#parentElement.innerHTML = "";
-    this.#parentElement.insertAdjacentHTML("afterBegin", markup);
-  };
-
-  #clear() {
-    this.#parentElement.innerHTML = "";
-  }
-
-  #generateMarkup(exam) {
+  _generateMarkup(exam) {
     return `
       <tr>
         <th scope="row">${exam.exam_token}</th>

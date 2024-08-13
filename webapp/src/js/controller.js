@@ -1,5 +1,6 @@
 import * as model from "./model.js";
 import examsView from "./views/examsView.js";
+import paginationView from "./views/paginationView.js";
 
 const controlExams = async function () {
   try {
@@ -7,10 +8,23 @@ const controlExams = async function () {
 
     await model.loadExams();
 
-    examsView.renderList(model.state.exams);
+    examsView.renderList(model.getExamsPage());
+    paginationView.render(model.state);
   } catch (error) {
-    alert(error);
+    examsView.clear();
+    examsView.renderError(error);
   }
 };
 
-controlExams();
+const controlPagination = function (gotoPage) {
+  examsView.renderList(model.getExamsPage(gotoPage));
+  paginationView.render(model.state);
+};
+
+const init = function () {
+  controlExams();
+  controlPagination();
+  paginationView.addHandlerClick(controlPagination);
+};
+
+init();

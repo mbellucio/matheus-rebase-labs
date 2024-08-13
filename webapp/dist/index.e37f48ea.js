@@ -588,26 +588,44 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _modelJs = require("./model.js");
 var _examsViewJs = require("./views/examsView.js");
 var _examsViewJsDefault = parcelHelpers.interopDefault(_examsViewJs);
+var _paginationViewJs = require("./views/paginationView.js");
+var _paginationViewJsDefault = parcelHelpers.interopDefault(_paginationViewJs);
 const controlExams = async function() {
     try {
         (0, _examsViewJsDefault.default).renderSpinner();
         await _modelJs.loadExams();
-        (0, _examsViewJsDefault.default).renderList(_modelJs.state.exams);
+        (0, _examsViewJsDefault.default).renderList(_modelJs.getExamsPage());
+        (0, _paginationViewJsDefault.default).render(_modelJs.state);
     } catch (error) {
-        alert(error);
+        (0, _examsViewJsDefault.default).clear();
+        (0, _examsViewJsDefault.default).renderError(error);
     }
 };
-controlExams();
+const controlPagination = function(gotoPage) {
+    (0, _examsViewJsDefault.default).renderList(_modelJs.getExamsPage(gotoPage));
+    (0, _paginationViewJsDefault.default).render(_modelJs.state);
+};
+const init = function() {
+    controlExams();
+    controlPagination();
+    (0, _paginationViewJsDefault.default).addHandlerClick(controlPagination);
+};
+init();
 
-},{"./model.js":"Y4A21","./views/examsView.js":"esRgU","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"Y4A21":[function(require,module,exports) {
+},{"./model.js":"Y4A21","./views/examsView.js":"esRgU","./views/paginationView.js":"6z7bi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"Y4A21":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadExams", ()=>loadExams);
+parcelHelpers.export(exports, "getExamsPage", ()=>getExamsPage);
 var _config = require("./config");
 var _helper = require("./helper");
 const state = {
-    exams: []
+    exams: [],
+    pagination: {
+        resultsPerPage: (0, _config.RESULTS_PER_PAGE),
+        page: 1
+    }
 };
 const loadExams = async function() {
     try {
@@ -616,11 +634,25 @@ const loadExams = async function() {
             state.exams.push(exam);
         });
     } catch (error) {
-        alert(error);
+        throw error;
     }
 };
+const getExamsPage = function(page = state.pagination.page) {
+    state.pagination.page = page;
+    const start = (page - 1) * state.pagination.resultsPerPage;
+    const end = page * state.pagination.resultsPerPage;
+    return state.exams.slice(start, end);
+};
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./config":"k5Hzs","./helper":"lVRAz"}],"gkKU3":[function(require,module,exports) {
+},{"./config":"k5Hzs","./helper":"lVRAz","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "API_URL", ()=>API_URL);
+parcelHelpers.export(exports, "RESULTS_PER_PAGE", ()=>RESULTS_PER_PAGE);
+const API_URL = "http://localhost:3000/exams";
+const RESULTS_PER_PAGE = 16;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -650,13 +682,7 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"k5Hzs":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "API_URL", ()=>API_URL);
-const API_URL = "http://localhost:3000/exams";
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lVRAz":[function(require,module,exports) {
+},{}],"lVRAz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getJSON", ()=>getJSON);
@@ -674,27 +700,19 @@ const getJSON = async function(url) {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"esRgU":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-class ExamsView {
-    #parentElement = document.querySelector("#exams");
-    #data;
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+class ExamsView extends (0, _viewJsDefault.default) {
+    _parentElement = document.querySelector("#exams");
+    _alertElement = document.querySelector("#alert");
     renderList(data) {
-        this.#data = data;
-        this.#clear();
-        this.#data.forEach((exam)=>{
-            this.#parentElement.insertAdjacentHTML("afterBegin", this.#generateMarkup(exam));
+        this._data = data;
+        this.clear();
+        this._data.forEach((exam)=>{
+            this._parentElement.insertAdjacentHTML("beforeEnd", this._generateMarkup(exam));
         });
     }
-    renderSpinner = function() {
-        const markup = `
-      <div class="loading"></div>
-    `;
-        this.#parentElement.innerHTML = "";
-        this.#parentElement.insertAdjacentHTML("afterBegin", markup);
-    };
-    #clear() {
-        this.#parentElement.innerHTML = "";
-    }
-    #generateMarkup(exam) {
+    _generateMarkup(exam) {
         return `
       <tr>
         <th scope="row">${exam.exam_token}</th>
@@ -707,6 +725,75 @@ class ExamsView {
 }
 exports.default = new ExamsView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["hycaY","aenu9"], "aenu9", "parcelRequire49ed")
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5cUXS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class View {
+    _parentElement;
+    _alertElement;
+    _data;
+    clear() {
+        this._parentElement.innerHTML = "";
+    }
+    render(data) {
+        this._data = data;
+        this.clear();
+        this._parentElement.insertAdjacentHTML("beforeEnd", this._generateMarkup());
+    }
+    renderSpinner() {
+        const markup = `
+      <div class="loading"></div>
+    `;
+        this._parentElement.innerHTML = "";
+        this._parentElement.insertAdjacentHTML("afterBegin", markup);
+    }
+    renderError(error) {
+        const markup = `<span>N\xe3o foi poss\xedvel carregar os exames => (${error})</span>`;
+        this._alertElement.innerHTML = "";
+        this._alertElement.insertAdjacentHTML("afterBegin", markup);
+    }
+}
+exports.default = View;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6z7bi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+class PaginationView extends (0, _viewJsDefault.default) {
+    _parentElement = document.querySelector("#pagination");
+    addHandlerClick(handler) {
+        this._parentElement.addEventListener("click", function(event) {
+            const button = event.target.closest(".btn");
+            if (!button) return;
+            const gotoPage = +button.dataset.goto;
+            handler(gotoPage);
+        });
+    }
+    _generateMarkup() {
+        const numPages = Math.ceil(this._data.exams.length / this._data.pagination.resultsPerPage);
+        if (this._data.pagination.page === 1 && numPages > 1) return `
+      <strong class="fs-5 me-3">${this._data.pagination.page}</strong>
+      <span class="text-muted me-3">${this._data.pagination.page + 1}</span>
+      <button data-goto=${this._data.pagination.page + 1} class="btn btn-outline-dark">Pr\xf3ximo</button>
+      `;
+        if (this._data.pagination.page === numPages && numPages > 1) return `
+      <button data-goto=${this._data.pagination.page - 1} class="btn btn-outline-dark me-3">Anterior</button>
+      <span class="text-muted me-3">${this._data.pagination.page - 1}</span>
+      <strong class="fs-5">${this._data.pagination.page}</strong>
+      `;
+        if (this._data.pagination.page < numPages) return `
+      <button data-goto=${this._data.pagination.page - 1} class="btn btn-outline-dark me-3">Anterior</button>
+      <span class="text-muted me-3">${this._data.pagination.page - 1}</span>
+      <strong class="fs-5 me-3">${this._data.pagination.page}</strong>
+      <span class="text-muted me-3">${this._data.pagination.page + 1}</span>
+      <button data-goto=${this._data.pagination.page + 1} class="btn btn-outline-dark">Pr\xf3ximo</button>
+      `;
+        return `<strong class="fs-5">${this._data.pagination.page}</strong>`;
+    }
+}
+exports.default = new PaginationView();
+
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["hycaY","aenu9"], "aenu9", "parcelRequire49ed")
 
 //# sourceMappingURL=index.e37f48ea.js.map

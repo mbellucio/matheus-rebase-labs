@@ -10,9 +10,9 @@
   </head>
 
   <body>
-    <nav class="bg-dark py-2">
+    <nav class="bg-dark py-3 sticky-top">
       <div class="">
-        <div class="container col-10 col-sm-10 d-flex align-items-center justify-content-between">
+        <div class="container col-10 d-flex align-items-center justify-content-between">
           <h2 class="m-0 p-0 text-light">REBASE SAÚDE</h2>
           <div class="">
             <a class="btn btn-outline-light me-3">Todos os Exames</a>
@@ -22,10 +22,13 @@
       </div>
     </nav>
 
+    <section id="alert" class="text-danger text-center mt-5 mb-5"></section>
+
     <section id="exams-section">
       <div class="container col-5 border shadow rounded-4 mt-5 py-3 px-4">
         <h3 class="text-center mt-2">Lista de exames</h3>
         <hr>
+
         <table class="table table-striped">
           <thead>
             <tr>
@@ -37,6 +40,8 @@
           </thead>
           <tbody id="exams"></tbody>
         </table>
+
+        <div id="pagination" class="col-4 d-flex align-items-center"></div>
       </div>
     </section>
 
