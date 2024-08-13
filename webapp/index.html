@@ -15,6 +15,7 @@
   </head>
 
   <body>
+
     <nav class="bg-dark py-3 sticky-top">
       <div class="">
         <div class="container col-10 d-flex align-items-center justify-content-between">
@@ -33,7 +34,6 @@
       <div class="container col-5 border shadow rounded-4 mt-5 py-3 px-4">
         <h3 class="text-center mt-2">Lista de exames</h3>
         <hr />
-
         <table class="table table-striped">
           <thead>
             <tr>
@@ -45,8 +45,36 @@
           </thead>
           <tbody id="exams"></tbody>
         </table>
-
         <div id="pagination" class="container p-0 col-4 d-flex align-items-center"></div>
+      </div>
+    </section>
+
+    <section id="detailed-exams" class="hidden">
+      <div class="container col-8 border shadow rounded-4 mt-5 py-3 px-4">
+        <h3 class="text-center mt-2">Resultado dos exames - #23112f</h3>
+        <hr>
+        <h5 class="text-center">Data: 12/07/2024</h5>
+        <div class="d-flex px-3 py-2">
+          <div class="container col-5 align-self-start border rounded-4 p-3">
+            <p><strong>Nome:</strong> Matheus Bellucio</p>
+            <p><strong>CPF:</strong> 110.489.617-61</p>
+            <p><strong>Data de Nascimento:</strong> 12/07/1996</p>
+            <p><strong>E-mail:</strong> matheusbellucio@gmail.com</p>
+          </div>
+          <div class="container col-5 border rounded-4 p-3">
+            <p><strong>Médico:</strong> Marcos Anderson</p>
+            <p><strong>CRM:</strong> B000BJ20J4/RJ</p>
+          </div>
+        </div>
+        <hr>
+        <div class="container d-flex col-11 justify-content-center" id="exam-results">
+          <div class="text-center border rounded-4 p-3 me-4">
+            <strong>Hemácias</strong>
+            <hr>
+            <p>Intervalo do resultado: 1-10</p>
+            <p>Resultado: 7</p>
+          </div>
+        </div>
       </div>
     </section>
 
