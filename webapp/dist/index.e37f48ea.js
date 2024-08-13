@@ -773,6 +773,7 @@ class PaginationView extends (0, _viewJsDefault.default) {
     _generateMarkup() {
         const numPages = Math.ceil(this._data.exams.length / this._data.pagination.resultsPerPage);
         if (this._data.pagination.page === 1 && numPages > 1) return `
+      <button data-goto=${this._data.pagination.page - 1} class="btn btn-outline-dark me-3" disabled>Anterior</button>
       <strong class="fs-5 me-3">${this._data.pagination.page}</strong>
       <span class="text-muted me-3">${this._data.pagination.page + 1}</span>
       <button data-goto=${this._data.pagination.page + 1} class="btn btn-outline-dark">Pr\xf3ximo</button>
@@ -780,7 +781,8 @@ class PaginationView extends (0, _viewJsDefault.default) {
         if (this._data.pagination.page === numPages && numPages > 1) return `
       <button data-goto=${this._data.pagination.page - 1} class="btn btn-outline-dark me-3">Anterior</button>
       <span class="text-muted me-3">${this._data.pagination.page - 1}</span>
-      <strong class="fs-5">${this._data.pagination.page}</strong>
+      <strong class="fs-5 me-3">${this._data.pagination.page}</strong>
+      <button data-goto=${this._data.pagination.page + 1} class="btn btn-outline-dark" disabled>Pr\xf3ximo</button>
       `;
         if (this._data.pagination.page < numPages) return `
       <button data-goto=${this._data.pagination.page - 1} class="btn btn-outline-dark me-3">Anterior</button>
