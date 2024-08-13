@@ -592,6 +592,10 @@ var _paginationViewJs = require("./views/paginationView.js");
 var _paginationViewJsDefault = parcelHelpers.interopDefault(_paginationViewJs);
 var _tokenSearchViewJs = require("./views/tokenSearchView.js");
 var _tokenSearchViewJsDefault = parcelHelpers.interopDefault(_tokenSearchViewJs);
+var _detailedExamsViewJs = require("./views/detailedExamsView.js");
+var _detailedExamsViewJsDefault = parcelHelpers.interopDefault(_detailedExamsViewJs);
+var _navbarViewJs = require("./views/navbarView.js");
+var _navbarViewJsDefault = parcelHelpers.interopDefault(_navbarViewJs);
 const controlExams = async function() {
     try {
         (0, _examsViewJsDefault.default).renderSpinner();
@@ -609,9 +613,17 @@ const controlTokenSearch = async function() {
         if (!token) return;
         await _modelJs.loadDetailedExams(token);
         if (_modelJs.state.tokenSearch.detailedExam.error) (0, _tokenSearchViewJsDefault.default).renderNotFound();
+        (0, _detailedExamsViewJsDefault.default).renderExam(_modelJs.state.tokenSearch.detailedExam);
+        (0, _tokenSearchViewJsDefault.default).clearInput((0, _detailedExamsViewJsDefault.default).section, (0, _examsViewJsDefault.default).section);
+        (0, _detailedExamsViewJsDefault.default).show();
+        (0, _examsViewJsDefault.default).hide();
     } catch (error) {
         console.log(error);
     }
+};
+const controlNavbarExams = function() {
+    (0, _examsViewJsDefault.default).show();
+    (0, _detailedExamsViewJsDefault.default).hide();
 };
 const controlPagination = function(gotoPage) {
     (0, _examsViewJsDefault.default).renderList(_modelJs.getExamsPage(gotoPage));
@@ -620,12 +632,14 @@ const controlPagination = function(gotoPage) {
 const init = function() {
     controlExams();
     controlPagination();
+    (0, _navbarViewJsDefault.default).createRedirectButton();
     (0, _paginationViewJsDefault.default).addHandlerClick(controlPagination);
     (0, _tokenSearchViewJsDefault.default).addHandlerSearch(controlTokenSearch);
+    (0, _navbarViewJsDefault.default).addHandlerExamsClick(controlNavbarExams);
 };
 init();
 
-},{"./model.js":"Y4A21","./views/examsView.js":"esRgU","./views/paginationView.js":"6z7bi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/tokenSearchView.js":"fIqow"}],"Y4A21":[function(require,module,exports) {
+},{"./model.js":"Y4A21","./views/examsView.js":"esRgU","./views/paginationView.js":"6z7bi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/tokenSearchView.js":"fIqow","./views/detailedExamsView.js":"jKlmF","./views/navbarView.js":"xAXOZ"}],"Y4A21":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
@@ -675,8 +689,10 @@ const loadDetailedExams = async function(token) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
+parcelHelpers.export(exports, "WEBAPP_URL", ()=>WEBAPP_URL);
 parcelHelpers.export(exports, "RESULTS_PER_PAGE", ()=>RESULTS_PER_PAGE);
 const API_URL = "http://localhost:3000/exams";
+const WEBAPP_URL = "http://localhost:1234";
 const RESULTS_PER_PAGE = 15;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
@@ -758,11 +774,19 @@ exports.default = new ExamsView();
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class View {
+    section;
     _parentElement;
     _alertElement;
     _data;
     clear() {
         this._parentElement.innerHTML = "";
+    }
+    hide() {
+        if (this.section.classList.contains("hidden")) return;
+        this.section.classList.add("hidden");
+    }
+    show() {
+        if (this.section.classList.contains("hidden")) return this.section.classList.remove("hidden");
     }
     render(data) {
         this._data = data;
@@ -837,6 +861,9 @@ class ExamsView extends (0, _viewJsDefault.default) {
     getToken() {
         return this._queryInput.value;
     }
+    clearInput() {
+        this._queryInput.value = "";
+    }
     renderNotFound() {
         this._notFound.innerHTML = "N\xe3o foi poss\xedvel encontrar um exame com este token";
     }
@@ -849,6 +876,79 @@ class ExamsView extends (0, _viewJsDefault.default) {
 }
 exports.default = new ExamsView();
 
-},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["hycaY","aenu9"], "aenu9", "parcelRequire49ed")
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jKlmF":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+class PaginationView extends (0, _viewJsDefault.default) {
+    section = document.querySelector("#detailed-exams-section");
+    _parentElement = document.querySelector("#detailed-exams");
+    _examResults = document.querySelector("#exam-results");
+    _data;
+    renderExam(data) {
+        this._data = data;
+        console.log(data);
+        this.clear();
+        this._parentElement.insertAdjacentHTML("beforeEnd", this._generateInfoMarkup(this._data));
+        this._data.exams.forEach((result)=>{
+            this._examResults.insertAdjacentHTML("beforeEnd", this._generateResultsMarkup(result));
+        });
+    }
+    _generateInfoMarkup(data) {
+        return `
+      <h3 class="text-center mt-2">Resultado dos exames - #${data.exam_token}</h3>
+      <hr>
+      <h5 class="text-center">Data: ${data.exam_date.split(" ")[0]}</h5>
+      <div class="d-flex px-3 py-2">
+        <div class="container col-5 align-self-start border rounded-4 p-3">
+          <p><strong>Nome:</strong> ${data.patient_name}</p>
+          <p><strong>CPF:</strong> ${data.cpf}</p>
+          <p><strong>Data de Nascimento:</strong> ${data.patient_birthdate.split(" ")[0]}</p>
+          <p><strong>E-mail:</strong> ${data.patient_mail}</p>
+        </div>
+        <div class="container col-5 border rounded-4 p-3">
+          <p><strong>M\xe9dico:</strong> ${data.medic.medic_name}</p>
+          <p><strong>CRM:</strong> ${data.medic.medic_crm}/${data.medic.medic_crm_state}</p>
+        </div>
+      </div>
+      <hr>
+      
+    `;
+    }
+    _generateResultsMarkup(result) {
+        return `
+      <div class="text-center col-3 border rounded-4 p-3 me-4 mb-3">
+        <strong>${result.exam_type}</strong>
+        <hr>
+        <p>Intervalo do resultado: ${result.exam_type_range}</p>
+        <p>Resultado: <strong>${result.exam_result}</strong></p>
+      </div>
+    `;
+    }
+}
+exports.default = new PaginationView();
+
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"xAXOZ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+var _configJs = require("../config.js");
+class NavbarView extends (0, _viewJsDefault.default) {
+    _examsButton = document.querySelector("#nav-exams-button");
+    _mainPageRedirectButton = document.querySelector("#main-page");
+    addHandlerExamsClick(handler) {
+        this._examsButton.addEventListener("click", function() {
+            handler();
+        });
+    }
+    createRedirectButton() {
+        this._mainPageRedirectButton.href = (0, _configJs.WEBAPP_URL);
+    }
+}
+exports.default = new NavbarView();
+
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../config.js":"k5Hzs"}]},["hycaY","aenu9"], "aenu9", "parcelRequire49ed")
 
 //# sourceMappingURL=index.e37f48ea.js.map

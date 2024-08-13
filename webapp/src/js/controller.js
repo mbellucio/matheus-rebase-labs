@@ -2,6 +2,8 @@ import * as model from "./model.js";
 import examsView from "./views/examsView.js";
 import paginationView from "./views/paginationView.js";
 import tokenSearchView from "./views/tokenSearchView.js";
+import detailedExamsView from "./views/detailedExamsView.js";
+import navbarView from "./views/navbarView.js";
 
 const controlExams = async function () {
   try {
@@ -28,9 +30,18 @@ const controlTokenSearch = async function () {
       tokenSearchView.renderNotFound();
     }
 
+    detailedExamsView.renderExam(model.state.tokenSearch.detailedExam);
+    tokenSearchView.clearInput(detailedExamsView.section, examsView.section);
+    detailedExamsView.show();
+    examsView.hide();
   } catch (error) {
     console.log(error);
   }
+};
+
+const controlNavbarExams = function () {
+  examsView.show();
+  detailedExamsView.hide();
 };
 
 const controlPagination = function (gotoPage) {
@@ -41,8 +52,10 @@ const controlPagination = function (gotoPage) {
 const init = function () {
   controlExams();
   controlPagination();
+  navbarView.createRedirectButton();
   paginationView.addHandlerClick(controlPagination);
   tokenSearchView.addHandlerSearch(controlTokenSearch);
+  navbarView.addHandlerExamsClick(controlNavbarExams);
 };
 
 init();

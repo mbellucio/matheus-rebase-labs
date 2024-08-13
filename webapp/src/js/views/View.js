@@ -1,10 +1,23 @@
 export default class View {
+  section;
   _parentElement;
   _alertElement;
   _data;
 
   clear() {
     this._parentElement.innerHTML = "";
+  }
+
+  hide() {
+    if (this.section.classList.contains("hidden")) return;
+
+    this.section.classList.add("hidden");
+  }
+
+  show() {
+    if (this.section.classList.contains("hidden")) {
+      return this.section.classList.remove("hidden");
+    }
   }
 
   render(data) {
