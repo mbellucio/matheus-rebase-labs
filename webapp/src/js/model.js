@@ -7,6 +7,10 @@ export const state = {
     resultsPerPage: RESULTS_PER_PAGE,
     page: 1,
   },
+  tokenSearch: {
+    detailedExam: {},
+    token: "",
+  },
 };
 
 export const loadExams = async function () {
@@ -27,4 +31,14 @@ export const getExamsPage = function (page = state.pagination.page) {
   const start = (page - 1) * state.pagination.resultsPerPage;
   const end = page * state.pagination.resultsPerPage;
   return state.exams.slice(start, end);
+};
+
+export const loadDetailedExams = async function (token) {
+  try {
+    const data = await getJSON(`${API_URL}?token=${token}`);
+    state.tokenSearch.token = token;
+    state.tokenSearch.detailedExam = data;
+  } catch (error) {
+    throw error;
+  }
 };

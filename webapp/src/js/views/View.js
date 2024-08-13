@@ -22,8 +22,8 @@ export default class View {
     this._parentElement.insertAdjacentHTML("afterBegin", markup);
   }
 
-  renderError(error) {
-    const markup = `<span>Não foi possível carregar os exames => (${error})</span>`;
+  renderError(error, msg) {
+    const markup = `<span>${msg} => (${error})</span>`;
 
     this._alertElement.innerHTML = "";
     this._alertElement.insertAdjacentHTML("afterBegin", markup);

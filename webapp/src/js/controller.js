@@ -1,6 +1,7 @@
 import * as model from "./model.js";
 import examsView from "./views/examsView.js";
 import paginationView from "./views/paginationView.js";
+import tokenSearchView from "./views/tokenSearchView.js";
 
 const controlExams = async function () {
   try {
@@ -12,7 +13,23 @@ const controlExams = async function () {
     paginationView.render(model.state);
   } catch (error) {
     examsView.clear();
-    examsView.renderError(error);
+    examsView.renderError(error, examsView.error_msg);
+  }
+};
+
+const controlTokenSearch = async function () {
+  try {
+    const token = tokenSearchView.getToken();
+    if (!token) return;
+
+    await model.loadDetailedExams(token);
+
+    if (model.state.tokenSearch.detailedExam.error) {
+      tokenSearchView.renderNotFound();
+    }
+
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -25,6 +42,7 @@ const init = function () {
   controlExams();
   controlPagination();
   paginationView.addHandlerClick(controlPagination);
+  tokenSearchView.addHandlerSearch(controlTokenSearch);
 };
 
 init();
