@@ -1,10 +1,9 @@
 import View from "./View.js";
 
 class ExamsView extends View {
-  section = document.querySelector("#exams-section")
+  section = document.querySelector("#exams-section");
   _parentElement = document.querySelector("#exams");
-  _alertElement = document.querySelector("#alert");
-  errorMsg = "Não foi possível carregar os exames"
+  errorMsg = "Não foi possível carregar os exames";
 
   renderList(data) {
     this._data = data;

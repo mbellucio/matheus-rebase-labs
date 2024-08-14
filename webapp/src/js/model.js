@@ -42,3 +42,16 @@ export const loadDetailedExams = async function (token) {
     throw error;
   }
 };
+
+export const postExams = async function (data) {
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      body: data,
+    });
+
+    if (!response.ok) throw new Error("Upload failed");
+  } catch (error) {
+    throw error;
+  }
+};

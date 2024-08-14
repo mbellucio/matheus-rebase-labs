@@ -10,7 +10,7 @@ class PaginationView extends View {
     this._data = data;
     console.log(data)
     this.clear();
-
+ 
     this._parentElement.insertAdjacentHTML(
       "beforeEnd",
       this._generateInfoMarkup(this._data)
