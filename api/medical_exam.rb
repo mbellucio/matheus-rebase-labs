@@ -24,6 +24,38 @@ class MedicalExam
        medic_crm_state, medic_name, medic_mail, exam_token, exam_date, exam_type, exam_type_range, exam_result])
   end
 
+  def find_by_token(token)
+    exams = @conn.exec("SELECT * FROM #{@table_name} WHERE exam_token = $1", [token]).to_a
+
+    if exams.empty?
+      return {error: 'Não foi possível encontrar nenhum exame com este token'}
+    end
+
+    result = {
+      exam_token: exams[0]['exam_token'],
+      exam_date: exams[0]['exam_date'],
+      cpf: exams[0]['cpf'],
+      patient_name: exams[0]['patient_name'],
+      patient_mail: exams[0]['patient_mail'],
+      patient_birthdate: exams[0]['patient_birthdate'],
+      medic: {
+        medic_crm: exams[0]['medic_crm'],
+        medic_crm_state: exams[0]['medic_crm_state'],
+        medic_name: exams[0]['medic_name'],
+      },
+      exams: []
+    }
+
+    exams.each do |exam|
+      result[:exams] << {
+        exam_type: exam['exam_type'],
+        exam_type_range: exam['exam_type_range'],
+        exam_result: exam['exam_result']
+      }
+    end
+    result
+  end
+
   def clear
     @conn.exec("TRUNCATE TABLE #{@table_name}")
   end

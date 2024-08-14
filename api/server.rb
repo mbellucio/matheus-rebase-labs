@@ -22,6 +22,8 @@ end
 
 get '/exams' do
   begin
+    return medical_exam.find_by_token(params[:token]).to_json if params[:token]
+
     medical_exam.all.to_json
   rescue PG::Error => e
     status 500

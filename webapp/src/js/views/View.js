@@ -1,10 +1,23 @@
 export default class View {
+  section;
   _parentElement;
   _alertElement;
   _data;
 
   clear() {
     this._parentElement.innerHTML = "";
+  }
+
+  hide() {
+    if (this.section.classList.contains("hidden")) return;
+
+    this.section.classList.add("hidden");
+  }
+
+  show() {
+    if (this.section.classList.contains("hidden")) {
+      return this.section.classList.remove("hidden");
+    }
   }
 
   render(data) {
@@ -22,8 +35,8 @@ export default class View {
     this._parentElement.insertAdjacentHTML("afterBegin", markup);
   }
 
-  renderError(error) {
-    const markup = `<span>Não foi possível carregar os exames => (${error})</span>`;
+  renderError(error, msg) {
+    const markup = `<span>${msg} => (${error})</span>`;
 
     this._alertElement.innerHTML = "";
     this._alertElement.insertAdjacentHTML("afterBegin", markup);
