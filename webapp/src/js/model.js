@@ -50,6 +50,8 @@ export const postExams = async function (data) {
       body: data,
     });
 
+    data = await response.json();
+    console.log(data);
     if (!response.ok) throw new Error("Upload failed");
   } catch (error) {
     throw error;

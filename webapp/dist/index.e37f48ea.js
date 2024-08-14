@@ -602,7 +602,7 @@ const controlExams = async function() {
     try {
         (0, _examsViewJsDefault.default).renderSpinner();
         await _modelJs.loadExams();
-        (0, _examsViewJsDefault.default).renderList(_modelJs.getExamsPage());
+        (0, _examsViewJsDefault.default).renderList(_modelJs.getExamsPage(244));
         (0, _paginationViewJsDefault.default).render(_modelJs.state);
     } catch (error) {
         (0, _examsViewJsDefault.default).clear();
@@ -710,6 +710,8 @@ const postExams = async function(data) {
             method: "POST",
             body: data
         });
+        data = await response.json();
+        console.log(data);
         if (!response.ok) throw new Error("Upload failed");
     } catch (error) {
         throw error;

@@ -1,4 +1,5 @@
 require 'pg'
+require 'csv'
 
 class MedicalExam
   def initialize(table_name)
@@ -54,6 +55,22 @@ class MedicalExam
       }
     end
     result
+  end
+
+  def populate_from_csv(file_path)
+    rows = CSV.read(file_path, col_sep: ';')
+    rows.shift
+
+    rows.each do |row|
+      @conn.exec("
+        INSERT INTO #{@table_name} (
+        cpf, patient_name, patient_mail, patient_birthdate,
+        patient_adress, patient_city, patient_state, medic_crm,
+        medic_crm_state, medic_name, medic_mail, exam_token, exam_date,
+        exam_type, exam_type_range, exam_result)
+        VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+      ", row)
+    end
   end
 
   def clear

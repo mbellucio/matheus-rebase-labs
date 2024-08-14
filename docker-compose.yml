@@ -3,6 +3,8 @@ services:
     image: ruby:3.3.0
     container_name: rebase_api
     working_dir: /app
+    environment:
+      REDIS_URL: redis://rebase_redis:6379
     ports:
       - "3000:3000"
     volumes:
@@ -30,6 +32,28 @@ services:
       - ./webapp:/app
     depends_on:
       - api
+
+  sidekiq:
+    image: ruby:3.3.0
+    container_name: rebase_sidekiq
+    working_dir: /app
+    environment:
+      REDIS_URL: redis://rebase_redis:6379
+    command: bash -c 'bundle install && bundle exec sidekiq -r ./sidekiq/*.rb'
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - api
+
+  redis:
+    image: redis:latest
+    container_name: rebase_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    volumes:
+      - .:/app
 
   test:
     image: ruby:3.3.0

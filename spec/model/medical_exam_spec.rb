@@ -89,4 +89,14 @@ describe 'MedicalExam' do
       expect(result[:exams][1][:exam_type]).to eq 'type 3'
     end
   end
+
+  context '.populate_from_csv' do
+    it 'pupulate database from a csv file' do
+      @medical_exam.populate_from_csv("./spec/support/data.csv")
+
+      result = @medical_exam.all
+
+      expect(result.length).to eq 4
+    end
+  end
 end
