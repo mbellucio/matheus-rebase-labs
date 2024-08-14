@@ -59,7 +59,13 @@ post '/exams' do
 
   sleep(5)
 
-  CsvJob.perform_async(file_full_path)
+  begin
+    CsvJob.perform_async(file_full_path)
+  rescue PG::Error => e
+    status 400
+    return {error: 'O arquivo contém valores inválidos'}.to_json
+  end
+
   {message: "Sucess", filePath: file_full_path}.to_json
 end
 
