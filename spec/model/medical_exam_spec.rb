@@ -91,7 +91,7 @@ describe 'MedicalExam' do
   end
 
   context '.populate_from_csv' do
-    it 'pupulate database from a csv file' do
+    it 'populate database from a csv file' do
       @medical_exam.populate_from_csv("./spec/support/data.csv")
 
       result = @medical_exam.all
