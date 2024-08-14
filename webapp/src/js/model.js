@@ -17,7 +17,7 @@ export const loadExams = async function () {
   try {
     const data = await getJSON(API_URL);
 
-    data.forEach((exam) => {
+    data.reverse().forEach((exam) => {
       state.exams.push(exam);
     });
   } catch (error) {
@@ -52,7 +52,7 @@ export const postExams = async function (data) {
 
     data = await response.json();
     console.log(data);
-    if (!response.ok) throw new Error("Upload failed");
+    if (!response.ok) throw new Error(data.error);
   } catch (error) {
     throw error;
   }

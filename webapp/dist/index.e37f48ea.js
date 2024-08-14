@@ -602,7 +602,7 @@ const controlExams = async function() {
     try {
         (0, _examsViewJsDefault.default).renderSpinner();
         await _modelJs.loadExams();
-        (0, _examsViewJsDefault.default).renderList(_modelJs.getExamsPage(244));
+        (0, _examsViewJsDefault.default).renderList(_modelJs.getExamsPage());
         (0, _paginationViewJsDefault.default).render(_modelJs.state);
     } catch (error) {
         (0, _examsViewJsDefault.default).clear();
@@ -682,7 +682,7 @@ const state = {
 const loadExams = async function() {
     try {
         const data = await (0, _helper.getJSON)((0, _config.API_URL));
-        data.forEach((exam)=>{
+        data.reverse().forEach((exam)=>{
             state.exams.push(exam);
         });
     } catch (error) {
@@ -712,7 +712,7 @@ const postExams = async function(data) {
         });
         data = await response.json();
         console.log(data);
-        if (!response.ok) throw new Error("Upload failed");
+        if (!response.ok) throw new Error(data.error);
     } catch (error) {
         throw error;
     }

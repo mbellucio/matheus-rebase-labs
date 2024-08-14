@@ -12,7 +12,7 @@ const controlExams = async function () {
 
     await model.loadExams();
 
-    examsView.renderList(model.getExamsPage(244));
+    examsView.renderList(model.getExamsPage());
     paginationView.render(model.state);
   } catch (error) {
     examsView.clear();
