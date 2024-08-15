@@ -43,8 +43,21 @@ You can access the web application on this URL: `http://localhost:1234`
 
 ## Tests
 
+### API
 The API application is tested, both with model and requests tests. <br>
 To view the test results simply run `docker logs rebase_test`
+
+### WebApp
+The Webapp contains e2e tests, aiming to secure that the user can <br>
+perform all functionalites intended. Those being: <br>
+- See all exams list
+- See a detailed exams list upon inserting a valid token
+- Insert new exams
+
+to run and check these tests, from this project repository:<br>
+```cd webapp``` then ```npm run cy:open```
+
+Note: You must have Node.js and Cypress to run in your machine.
 
 # Rebase API
 

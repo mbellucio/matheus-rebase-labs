@@ -3,12 +3,17 @@
   "version": "1.0.0",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html",
+    "cy:open": "cypress open"
   },
   "author": "Matheus Bellucio",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "cypress-file-upload": "^5.0.8",
     "parcel": "^2.12.0"
+  },
+  "dependencies": {
+    "cypress": "^13.13.3"
   }
 }
