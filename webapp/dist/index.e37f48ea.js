@@ -596,6 +596,10 @@ var _detailedExamsViewJs = require("./views/detailedExamsView.js");
 var _detailedExamsViewJsDefault = parcelHelpers.interopDefault(_detailedExamsViewJs);
 var _navbarViewJs = require("./views/navbarView.js");
 var _navbarViewJsDefault = parcelHelpers.interopDefault(_navbarViewJs);
+var _insertExamsViewJs = require("./views/insertExamsView.js");
+var _insertExamsViewJsDefault = parcelHelpers.interopDefault(_insertExamsViewJs);
+var _insertSuccessViewJs = require("./views/insertSuccessView.js");
+var _insertSuccessViewJsDefault = parcelHelpers.interopDefault(_insertSuccessViewJs);
 const controlExams = async function() {
     try {
         (0, _examsViewJsDefault.default).renderSpinner();
@@ -604,7 +608,7 @@ const controlExams = async function() {
         (0, _paginationViewJsDefault.default).render(_modelJs.state);
     } catch (error) {
         (0, _examsViewJsDefault.default).clear();
-        (0, _examsViewJsDefault.default).renderError(error, (0, _examsViewJsDefault.default).error_msg);
+        (0, _examsViewJsDefault.default).renderError(error, (0, _examsViewJsDefault.default).errorMsg);
     }
 };
 const controlTokenSearch = async function() {
@@ -617,12 +621,30 @@ const controlTokenSearch = async function() {
         (0, _tokenSearchViewJsDefault.default).clearInput((0, _detailedExamsViewJsDefault.default).section, (0, _examsViewJsDefault.default).section);
         (0, _detailedExamsViewJsDefault.default).show();
         (0, _examsViewJsDefault.default).hide();
+        (0, _insertExamsViewJsDefault.default).hide();
+        (0, _insertSuccessViewJsDefault.default).hide();
     } catch (error) {
         console.log(error);
     }
 };
+const controlInsertExams = async function(data) {
+    console.log(data);
+    try {
+        await _modelJs.postExams(data);
+        (0, _insertExamsViewJsDefault.default).hide();
+        (0, _insertSuccessViewJsDefault.default).show();
+    } catch (error) {
+        (0, _insertExamsViewJsDefault.default).renderError(error, (0, _insertExamsViewJsDefault.default).errorMsg);
+    }
+};
 const controlNavbarExams = function() {
     (0, _examsViewJsDefault.default).show();
+    (0, _detailedExamsViewJsDefault.default).hide();
+    (0, _insertExamsViewJsDefault.default).hide();
+};
+const controlNavbarInsertExams = function() {
+    (0, _insertExamsViewJsDefault.default).show();
+    (0, _examsViewJsDefault.default).hide();
     (0, _detailedExamsViewJsDefault.default).hide();
 };
 const controlPagination = function(gotoPage) {
@@ -630,22 +652,25 @@ const controlPagination = function(gotoPage) {
     (0, _paginationViewJsDefault.default).render(_modelJs.state);
 };
 const init = function() {
-    controlExams();
     controlPagination();
     (0, _navbarViewJsDefault.default).createRedirectButton();
     (0, _paginationViewJsDefault.default).addHandlerClick(controlPagination);
     (0, _tokenSearchViewJsDefault.default).addHandlerSearch(controlTokenSearch);
     (0, _navbarViewJsDefault.default).addHandlerExamsClick(controlNavbarExams);
+    (0, _navbarViewJsDefault.default).addHandlerInsertExamsClick(controlNavbarInsertExams);
+    (0, _insertExamsViewJsDefault.default).addHandlerUpload(controlInsertExams);
+    controlExams();
 };
 init();
 
-},{"./model.js":"Y4A21","./views/examsView.js":"esRgU","./views/paginationView.js":"6z7bi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/tokenSearchView.js":"fIqow","./views/detailedExamsView.js":"jKlmF","./views/navbarView.js":"xAXOZ"}],"Y4A21":[function(require,module,exports) {
+},{"./model.js":"Y4A21","./views/examsView.js":"esRgU","./views/paginationView.js":"6z7bi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/tokenSearchView.js":"fIqow","./views/detailedExamsView.js":"jKlmF","./views/navbarView.js":"xAXOZ","./views/insertExamsView.js":"5n0Tn","./views/insertSuccessView.js":"5B7KN"}],"Y4A21":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadExams", ()=>loadExams);
 parcelHelpers.export(exports, "getExamsPage", ()=>getExamsPage);
 parcelHelpers.export(exports, "loadDetailedExams", ()=>loadDetailedExams);
+parcelHelpers.export(exports, "postExams", ()=>postExams);
 var _config = require("./config");
 var _helper = require("./helper");
 const state = {
@@ -662,7 +687,7 @@ const state = {
 const loadExams = async function() {
     try {
         const data = await (0, _helper.getJSON)((0, _config.API_URL));
-        data.forEach((exam)=>{
+        data.reverse().forEach((exam)=>{
             state.exams.push(exam);
         });
     } catch (error) {
@@ -680,6 +705,19 @@ const loadDetailedExams = async function(token) {
         const data = await (0, _helper.getJSON)(`${(0, _config.API_URL)}?token=${token}`);
         state.tokenSearch.token = token;
         state.tokenSearch.detailedExam = data;
+    } catch (error) {
+        throw error;
+    }
+};
+const postExams = async function(data) {
+    try {
+        const response = await fetch((0, _config.API_URL), {
+            method: "POST",
+            body: data
+        });
+        data = await response.json();
+        console.log(data);
+        if (!response.ok) throw new Error(data.error);
     } catch (error) {
         throw error;
     }
@@ -748,7 +786,6 @@ var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 class ExamsView extends (0, _viewJsDefault.default) {
     section = document.querySelector("#exams-section");
     _parentElement = document.querySelector("#exams");
-    _alertElement = document.querySelector("#alert");
     errorMsg = "N\xe3o foi poss\xedvel carregar os exames";
     renderList(data) {
         this._data = data;
@@ -776,7 +813,7 @@ parcelHelpers.defineInteropFlag(exports);
 class View {
     section;
     _parentElement;
-    _alertElement;
+    _alertElement = document.querySelector("#alert");
     _data;
     clear() {
         this._parentElement.innerHTML = "";
@@ -786,11 +823,13 @@ class View {
         this.section.classList.add("hidden");
     }
     show() {
+        this.clearError();
         if (this.section.classList.contains("hidden")) return this.section.classList.remove("hidden");
     }
     render(data) {
         this._data = data;
         this.clear();
+        this.clearError();
         this._parentElement.insertAdjacentHTML("beforeEnd", this._generateMarkup());
     }
     renderSpinner() {
@@ -802,8 +841,13 @@ class View {
     }
     renderError(error, msg) {
         const markup = `<span>${msg} => (${error})</span>`;
-        this._alertElement.innerHTML = "";
+        this.clearError();
+        this._alertElement.classList.remove("hidden");
         this._alertElement.insertAdjacentHTML("afterBegin", markup);
+    }
+    clearError() {
+        this._alertElement.classList.add("hidden");
+        this._alertElement.innerHTML = "";
     }
 }
 exports.default = View;
@@ -937,9 +981,15 @@ var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
 var _configJs = require("../config.js");
 class NavbarView extends (0, _viewJsDefault.default) {
     _examsButton = document.querySelector("#nav-exams-button");
+    _insertExamsButton = document.querySelector("#nav-insert-exams-button");
     _mainPageRedirectButton = document.querySelector("#main-page");
     addHandlerExamsClick(handler) {
         this._examsButton.addEventListener("click", function() {
+            handler();
+        });
+    }
+    addHandlerInsertExamsClick(handler) {
+        this._insertExamsButton.addEventListener("click", function() {
             handler();
         });
     }
@@ -949,6 +999,35 @@ class NavbarView extends (0, _viewJsDefault.default) {
 }
 exports.default = new NavbarView();
 
-},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../config.js":"k5Hzs"}]},["hycaY","aenu9"], "aenu9", "parcelRequire49ed")
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../config.js":"k5Hzs"}],"5n0Tn":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+class InsertExamsView extends (0, _viewJsDefault.default) {
+    section = document.querySelector("#insert-exams-section");
+    _parentElement = document.querySelector("#insert-exams");
+    errorMsg = "Houve uma falha ao enviar o arquivo.";
+    addHandlerUpload(handler) {
+        this._parentElement.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const data = new FormData(this);
+            handler(data);
+        });
+    }
+}
+exports.default = new InsertExamsView();
+
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5B7KN":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _viewJs = require("./View.js");
+var _viewJsDefault = parcelHelpers.interopDefault(_viewJs);
+class InsertSuccess extends (0, _viewJsDefault.default) {
+    section = document.querySelector("#insert-success-section");
+}
+exports.default = new InsertSuccess();
+
+},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["hycaY","aenu9"], "aenu9", "parcelRequire49ed")
 
 //# sourceMappingURL=index.e37f48ea.js.map

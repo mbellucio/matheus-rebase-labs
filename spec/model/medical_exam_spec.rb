@@ -3,7 +3,7 @@ require_relative '../../api/medical_exam'
 
 describe 'MedicalExam' do
   before(:each) do
-    @medical_exam = MedicalExam.new('medical_exams_test')
+    @medical_exam = MedicalExam.new(ENV['TABLE_NAME'])
   end
 
   after(:each) do
@@ -87,6 +87,16 @@ describe 'MedicalExam' do
       expect(result[:exams].length).to eq 2
       expect(result[:exams][0][:exam_type]).to eq 'type 1'
       expect(result[:exams][1][:exam_type]).to eq 'type 3'
+    end
+  end
+
+  context '.populate_from_csv' do
+    it 'populate database from a csv file' do
+      @medical_exam.populate_from_csv("./spec/support/data.csv")
+
+      result = @medical_exam.all
+
+      expect(result.length).to eq 4
     end
   end
 end

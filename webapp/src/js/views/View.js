@@ -1,7 +1,7 @@
 export default class View {
   section;
   _parentElement;
-  _alertElement;
+  _alertElement = document.querySelector("#alert");
   _data;
 
   clear() {
@@ -15,6 +15,7 @@ export default class View {
   }
 
   show() {
+    this.clearError();
     if (this.section.classList.contains("hidden")) {
       return this.section.classList.remove("hidden");
     }
@@ -23,7 +24,7 @@ export default class View {
   render(data) {
     this._data = data;
     this.clear();
-
+    this.clearError();
     this._parentElement.insertAdjacentHTML("beforeEnd", this._generateMarkup());
   }
 
@@ -38,7 +39,13 @@ export default class View {
   renderError(error, msg) {
     const markup = `<span>${msg} => (${error})</span>`;
 
-    this._alertElement.innerHTML = "";
+    this.clearError();
+    this._alertElement.classList.remove("hidden");
     this._alertElement.insertAdjacentHTML("afterBegin", markup);
+  }
+
+  clearError() {
+    this._alertElement.classList.add("hidden");
+    this._alertElement.innerHTML = "";
   }
 }

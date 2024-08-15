@@ -3,3 +3,7 @@
 .hidden {
   display: none;
 }
+
+.mt-15 {
+  margin-top: 15%;
+}

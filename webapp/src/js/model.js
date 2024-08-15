@@ -17,7 +17,7 @@ export const loadExams = async function () {
   try {
     const data = await getJSON(API_URL);
 
-    data.forEach((exam) => {
+    data.reverse().forEach((exam) => {
       state.exams.push(exam);
     });
   } catch (error) {
@@ -38,6 +38,21 @@ export const loadDetailedExams = async function (token) {
     const data = await getJSON(`${API_URL}?token=${token}`);
     state.tokenSearch.token = token;
     state.tokenSearch.detailedExam = data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const postExams = async function (data) {
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      body: data,
+    });
+
+    data = await response.json();
+    console.log(data);
+    if (!response.ok) throw new Error(data.error);
   } catch (error) {
     throw error;
   }

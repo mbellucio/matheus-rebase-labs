@@ -2,6 +2,7 @@
 
 require 'csv'
 require 'pg'
+require_relative '../api/medical_exam.rb'
 
 conn = PG.connect(host: 'postgres_db', dbname: 'labsdb', user: 'admin', password: 'railsdbmigrate')
 conn.exec("
@@ -28,16 +29,5 @@ conn.exec("
 
 conn.exec("CREATE TABLE medical_exams_test AS SELECT * FROM medical_exams LIMIT 0;")
 
-rows = CSV.read('db/data.csv', col_sep: ';')
-rows.shift
-
-rows.each do |row|
-  conn.exec("
-    INSERT INTO medical_exams (
-    cpf, patient_name, patient_mail, patient_birthdate,
-    patient_adress, patient_city, patient_state, medic_crm,
-    medic_crm_state, medic_name, medic_mail, exam_token, exam_date,
-    exam_type, exam_type_range, exam_result)
-    VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
-  ", row)
-end
+medical_exam = MedicalExam.new(ENV['TABLE_NAME'])
+medical_exam.populate_from_csv('./db/data.csv')

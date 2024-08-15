@@ -4,6 +4,8 @@ import paginationView from "./views/paginationView.js";
 import tokenSearchView from "./views/tokenSearchView.js";
 import detailedExamsView from "./views/detailedExamsView.js";
 import navbarView from "./views/navbarView.js";
+import insertExamsView from "./views/insertExamsView.js";
+import insertSuccessView from "./views/insertSuccessView.js";
 
 const controlExams = async function () {
   try {
@@ -15,7 +17,7 @@ const controlExams = async function () {
     paginationView.render(model.state);
   } catch (error) {
     examsView.clear();
-    examsView.renderError(error, examsView.error_msg);
+    examsView.renderError(error, examsView.errorMsg);
   }
 };
 
@@ -34,13 +36,33 @@ const controlTokenSearch = async function () {
     tokenSearchView.clearInput(detailedExamsView.section, examsView.section);
     detailedExamsView.show();
     examsView.hide();
+    insertExamsView.hide();
+    insertSuccessView.hide();
   } catch (error) {
     console.log(error);
   }
 };
 
+const controlInsertExams = async function (data) {
+  console.log(data);
+  try {
+    await model.postExams(data);
+    insertExamsView.hide();
+    insertSuccessView.show();
+  } catch (error) {
+    insertExamsView.renderError(error, insertExamsView.errorMsg);
+  }
+};
+
 const controlNavbarExams = function () {
   examsView.show();
+  detailedExamsView.hide();
+  insertExamsView.hide();
+};
+
+const controlNavbarInsertExams = function () {
+  insertExamsView.show();
+  examsView.hide();
   detailedExamsView.hide();
 };
 
@@ -50,12 +72,14 @@ const controlPagination = function (gotoPage) {
 };
 
 const init = function () {
-  controlExams();
   controlPagination();
   navbarView.createRedirectButton();
   paginationView.addHandlerClick(controlPagination);
   tokenSearchView.addHandlerSearch(controlTokenSearch);
   navbarView.addHandlerExamsClick(controlNavbarExams);
+  navbarView.addHandlerInsertExamsClick(controlNavbarInsertExams);
+  insertExamsView.addHandlerUpload(controlInsertExams);
+  controlExams();
 };
 
 init();

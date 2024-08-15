@@ -10,40 +10,62 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <script src="https://kit.fontawesome.com/0fcddaed2f.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="src/css/main.css" />
     <script defer type="module" src="src/js/controller.js"></script>
   </head>
 
   <body>
-
     <nav class="bg-dark py-3 sticky-top">
       <div class="">
-        <div class="container col-10 d-flex align-items-center justify-content-between">
-          <a class="m-0 p-0 text-light link-underline-dark fs-2" id="main-page" href="#">REBASE SAÚDE</a>
+        <div
+          class="container col-10 d-flex align-items-center justify-content-between"
+        >
+          <a
+            class="m-0 p-0 text-light link-underline-dark fs-2"
+            id="main-page"
+            href="#"
+            >REBASE SAÚDE</a
+          >
           <div class="">
-            <a class="btn btn-outline-light me-3" id="nav-exams-button">Todos os Exames</a>
-            <a class="btn btn-outline-light me-3">link</a>
+            <a class="btn btn-outline-light me-3" id="nav-exams-button"
+              >Todos os Exames</a
+            >
+            <a class="btn btn-outline-light me-3" id="nav-insert-exams-button"
+              >Inserir Exames</a
+            >
           </div>
         </div>
       </div>
     </nav>
 
-    <section id="alert" class="text-danger text-center mt-5 mb-5"></section>
+    <section
+      id="alert"
+      class="hidden container col-4 py-2 text-danger bg-danger bg-opacity-25 text-center mt-5 mb-5"
+    ></section>
 
-    <section id="exams-section">
+    <section id="exams-section" class="">
       <div class="container col-5 border shadow rounded-4 mt-5 py-3 px-4">
+        <a type="button" onClick="window.location.reload();" class="position-absolute text-dark mt-2">
+          <i class="fa-solid fa-arrows-rotate fa-2xl"></i>
+        </a>
         <h3 class="text-center mt-2">Lista de exames</h3>
         <hr />
 
-          <form id="token-search" class="container text-center">
-            <div class="container d-flex col-7 mb-2">
-              <input id="search-input" type="text" class="form-control me-2" placeholder="Insira aqui o token dos exames">
-              <button class="btn btn-dark">Procurar</button>
-            </div>
-            <span id="not-found" class="text-danger"></span>
-          </form>
+        <form id="token-search" class="container text-center">
+          <div class="container d-flex col-7 mb-2">
+            <input
+              id="search-input"
+              type="text"
+              class="form-control me-2"
+              placeholder="Insira aqui o token dos exames"
+            />
+            <button class="btn btn-dark">Procurar</button>
+          </div>
+          <span id="not-found" class="text-danger"></span>
+        </form>
 
-        <hr>
+        <hr />
         <table class="table table-striped">
           <thead>
             <tr>
@@ -55,14 +77,43 @@
           </thead>
           <tbody id="exams"></tbody>
         </table>
-        <div id="pagination" class="container p-0 col-4 d-flex align-items-center"></div>
+        <div
+          id="pagination"
+          class="container p-0 col-4 d-flex align-items-center"
+        ></div>
       </div>
     </section>
 
     <section id="detailed-exams-section" class="hidden">
-      <div class="container col-7 border shadow rounded-4 mt-5 mb-5 py-3 px-4" >
+      <div class="container col-7 border shadow rounded-4 mt-5 mb-5 py-3 px-4">
         <div id="detailed-exams"></div>
-        <div class="d-flex flex-wrap justify-content-center" id="exam-results"></div>
+        <div
+          class="d-flex flex-wrap justify-content-center"
+          id="exam-results"
+        ></div>
+      </div>
+    </section>
+
+    <section id="insert-exams-section" class="hidden">
+      <div
+        class="container col-4 border shadow rounded-4 mt-15 px-3 pb-5 pt-3 justify-content-center"
+      >
+        <h2 class="text-center">Adicione resultados de exames</h2>
+        <hr />
+        <form class="d-flex container col-10" id="insert-exams">
+          <input type="file" class="form-control me-3" name="file" />
+          <button class="btn btn-dark">Enviar</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="insert-success-section" class="hidden">
+      <div class="container text-center mt-15">
+        <h2>Sucesso!</h2>
+        <p>
+          Em alguns instantes os novos exames inseridos estarão disponíveis na
+          plataforma.
+        </p>
       </div>
     </section>
 
@@ -73,5 +124,3 @@
     ></script>
   </body>
 </html>
-
-

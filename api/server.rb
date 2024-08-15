@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 require_relative 'medical_exam'
+require_relative '../sidekiq/csv_job'
 require 'sinatra'
 require 'sinatra/cors'
 require 'rack/handler/puma'
 
 set :allow_origin, 'http://localhost:1234'
-set :allow_methods, 'GET'
+set :allow_methods, 'GET, POST'
 set :allow_headers, 'Content-Type, Authorization, Accept, X-Requested-With'
 
-medical_exam = MedicalExam.new('medical_exams')
+medical_exam = MedicalExam.new(ENV['TABLE_NAME'])
 
 get '/tests' do
   begin
@@ -31,8 +32,46 @@ get '/exams' do
   end
 end
 
-Rack::Handler::Puma.run(
-  Sinatra::Application,
-  Port: 3000,
-  Host: '0.0.0.0'
-)
+post '/exams' do
+  unless params[:file] && (uploaded_file = params[:file][:tempfile]) && (filename = params[:file][:filename])
+    status 400
+    return {error: 'Nenhum arquivo foi enviado'}.to_json
+  end
+
+  p params[:file]
+
+  file_extension = File.extname(filename).downcase
+  file_type = params[:file][:type]
+
+  unless file_extension == '.csv' && file_type == 'text/csv'
+    status 415
+    return {error: 'O arquivo deve ser no formato .csv'}.to_json
+  end
+
+  target_directory = './uploads/'
+  target_filename = "#{SecureRandom.hex}.csv"
+  file_full_path = "#{target_directory}#{target_filename}"
+  FileUtils.mkdir_p(target_directory)
+
+  File.open(file_full_path, 'wb') do |file|
+    file.write(uploaded_file.read)
+  end
+
+  begin
+    CsvJob.perform_async(file_full_path, ENV['TABLE_NAME'])
+  rescue PG::Error => e
+    status 400
+    return {error: 'O arquivo contém valores inválidos'}.to_json
+  end
+
+  {message: "Sucess"}.to_json
+end
+
+
+unless ENV['RACK_ENV'] == 'test'
+  Rack::Handler::Puma.run(
+    Sinatra::Application,
+    Port: 3000,
+    Host: '0.0.0.0'
+  )
+end
