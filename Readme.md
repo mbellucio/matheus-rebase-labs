@@ -294,3 +294,13 @@ In this page, the user can insert exams.
 ### Success feedback
 ![image](https://github.com/user-attachments/assets/563868b0-42b1-4a34-b121-fd0271b4c8ed)
 If the user inserted valid CSV data, the Webapp will inform him.
+
+# Documentations used to build this project
+- [Sidekiq](https://github.com/sidekiq/sidekiq)
+- [Boostrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
+- [Parcel](https://parceljs.org/getting-started/webapp/)
+- [MDN Webdocs](https://developer.mozilla.org/pt-BR/)
+- [Sinatra](https://sinatrarb.com/documentation.html)
+- [Docker](https://docs.docker.com/guides/)
+- [Rspec](https://rspec.info/)
+- [Rack-test](https://github.com/rack/rack-test)
