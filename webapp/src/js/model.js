@@ -51,7 +51,6 @@ export const postExams = async function (data) {
     });
 
     data = await response.json();
-    console.log(data);
     if (!response.ok) throw new Error(data.error);
   } catch (error) {
     throw error;

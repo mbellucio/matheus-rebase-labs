@@ -1,6 +1,8 @@
 require 'rack/test'
 require_relative '../api/server'
 
+sleep(1)
+
 module RSpecMixin
   def app
     Sinatra::Application

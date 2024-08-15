@@ -628,7 +628,6 @@ const controlTokenSearch = async function() {
     }
 };
 const controlInsertExams = async function(data) {
-    console.log(data);
     try {
         await _modelJs.postExams(data);
         (0, _insertExamsViewJsDefault.default).hide();
@@ -718,7 +717,6 @@ const postExams = async function(data) {
             body: data
         });
         data = await response.json();
-        console.log(data);
         if (!response.ok) throw new Error(data.error);
     } catch (error) {
         throw error;
@@ -934,7 +932,6 @@ class PaginationView extends (0, _viewJsDefault.default) {
     _data;
     renderExam(data) {
         this._data = data;
-        console.log(data);
         this.clear();
         this._parentElement.insertAdjacentHTML("beforeEnd", this._generateInfoMarkup(this._data));
         this._data.exams.forEach((result)=>{

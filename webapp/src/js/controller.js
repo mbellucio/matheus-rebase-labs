@@ -44,7 +44,6 @@ const controlTokenSearch = async function () {
 };
 
 const controlInsertExams = async function (data) {
-  console.log(data);
   try {
     await model.postExams(data);
     insertExamsView.hide();

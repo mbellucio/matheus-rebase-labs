@@ -8,7 +8,6 @@ class PaginationView extends View {
 
   renderExam(data) {
     this._data = data;
-    console.log(data)
     this.clear();
  
     this._parentElement.insertAdjacentHTML(
