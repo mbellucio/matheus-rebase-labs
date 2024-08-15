@@ -5,6 +5,7 @@ import tokenSearchView from "./views/tokenSearchView.js";
 import detailedExamsView from "./views/detailedExamsView.js";
 import navbarView from "./views/navbarView.js";
 import insertExamsView from "./views/insertExamsView.js";
+import insertSuccessView from "./views/insertSuccessView.js";
 
 const controlExams = async function () {
   try {
@@ -36,6 +37,7 @@ const controlTokenSearch = async function () {
     detailedExamsView.show();
     examsView.hide();
     insertExamsView.hide();
+    insertSuccessView.hide();
   } catch (error) {
     console.log(error);
   }
@@ -45,6 +47,8 @@ const controlInsertExams = async function (data) {
   console.log(data);
   try {
     await model.postExams(data);
+    insertExamsView.hide();
+    insertSuccessView.show();
   } catch (error) {
     insertExamsView.renderError(error, insertExamsView.errorMsg);
   }
