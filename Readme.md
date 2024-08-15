@@ -12,13 +12,14 @@ a frontend application that an user can interact with. Furthermore, the user sho
 be able to insert a CSV file into the database through the webapp application, and this <br>
 should be done using an async job. To end it all, all of that must integrated with Docker.
 
-Here's a peek of the Docker container structure to achieve the project goals: 
+Here's a peek of the Docker container structure to achieve the project goals:
+
 - postgres_db
 - rebase_api - api made with Sinatra
 - rebase_test - test container using Ruby Rspec framework
 - rebase_webapp - Frontend webapp in Javascript, using parcel bundler
 - rebase_sidekiq - container setup to use sidekiq for async jobs
-- redis - container to enqueue jobs coming from rebase_sidekiq
+- rebase_redis - container to enqueue jobs coming from rebase_sidekiq
 
 ## TechStack
 
@@ -46,21 +47,26 @@ The API application is tested, both with model and requests tests. <br>
 To view the test results simply run `docker logs rebase_test`
 
 # Rebase API
+
 ## Introduction
+
 Welcome to the Reabase API!. This documentation will guide you throught our API and its available resources and how to consume them with HTTP requests.
 
 ## Authentication
+
 Rebase API is a completely open API. No authentication is required to query and get data.
 
 ## Resources
 
-### Exams 
+### Exams
+
 An exam contains the all the information about an specific exam.
 
 ## GET /exams
 
 ### Example request:
-```http http://localhost:3000/exams```
+
+`http http://localhost:3000/exams`
 
 ### Example response:
 
@@ -108,11 +114,13 @@ An exam contains the all the information about an specific exam.
 ```
 
 ## GET /exams?token=:token
+
 Given a valid token, this will return all information and exams <br>
 under that token.
 
 ### Example request:
-```http http://localhost:3000/exams?token=IQCZ17```
+
+`http http://localhost:3000/exams?token=IQCZ17`
 
 ### Example response:
 
@@ -200,11 +208,13 @@ under that token.
 ```
 
 ## POST /exams
+
 This endpoint requires a CSV file in the right format.<br>
 To see the valid format look into <code>./spec/support/data.csv</code><br>
 on this project root.
 
 ### Example request
+
 To upload a CSV file, you'll need to send a POST request with the file included as form data under the key <code>file</code>.
 
 ### Using curl
@@ -216,30 +226,33 @@ curl -X POST http://localhost:3000/exams \
 ```
 
 ### Example success response:
+
 ```json
 {
   "message": "Success"
 }
 ```
 
-### Example invalid file response (status 415): 
+### Example invalid file response (status 415):
+
 ```json
 {
   "error": "O arquivo deve ser no formato .csv"
 }
 ```
 
-### Example no file response (status 400): 
+### Example no file response (status 400):
+
 ```json
 {
   "error": "Nenhum arquivo foi enviado"
 }
 ```
 
-### Example invalid content from csv response (status 422): 
+### Example invalid content from csv response (status 422):
+
 ```json
 {
   "error": "O arquivo deve conter dados válidos"
 }
 ```
-

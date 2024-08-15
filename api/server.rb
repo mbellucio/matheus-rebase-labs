@@ -57,12 +57,12 @@ post '/exams' do
     file.write(uploaded_file.read)
   end
 
-  begin
-    CsvJob.perform_async(file_full_path, ENV['TABLE_NAME'])
-  rescue PG::Error => e
-    status 400
-    return {error: 'O arquivo contém valores inválidos'}.to_json
+  unless medical_exam.csv_is_valid?(file_full_path)
+    status 422
+    return {error: "O arquivo deve conter dados válidos"}.to_json
   end
+
+  CsvJob.perform_async(file_full_path, ENV['TABLE_NAME'])
 
   {message: "Success"}.to_json
 end

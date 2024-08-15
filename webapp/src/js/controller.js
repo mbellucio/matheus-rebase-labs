@@ -58,12 +58,14 @@ const controlNavbarExams = function () {
   examsView.show();
   detailedExamsView.hide();
   insertExamsView.hide();
+  insertSuccessView.hide();
 };
 
 const controlNavbarInsertExams = function () {
   insertExamsView.show();
   examsView.hide();
   detailedExamsView.hide();
+  insertSuccessView.hide();
 };
 
 const controlPagination = function (gotoPage) {
