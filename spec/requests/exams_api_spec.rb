@@ -4,6 +4,7 @@ describe 'Exams API' do
 
   before(:each) do
     @medical_exam = MedicalExam.new(ENV['TABLE_NAME'])
+    @medical_exam.clear
   end
 
   after(:each) do
