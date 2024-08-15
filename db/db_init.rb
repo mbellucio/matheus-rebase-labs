@@ -29,5 +29,5 @@ conn.exec("
 
 conn.exec("CREATE TABLE medical_exams_test AS SELECT * FROM medical_exams LIMIT 0;")
 
-medical_exam = MedicalExam.new('medical_exams')
+medical_exam = MedicalExam.new(ENV['TABLE_NAME'])
 medical_exam.populate_from_csv('./db/data.csv')

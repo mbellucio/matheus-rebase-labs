@@ -3,7 +3,7 @@ require_relative '../../api/medical_exam'
 
 describe 'MedicalExam' do
   before(:each) do
-    @medical_exam = MedicalExam.new('medical_exams_test')
+    @medical_exam = MedicalExam.new(ENV['TABLE_NAME'])
   end
 
   after(:each) do

@@ -10,7 +10,7 @@ set :allow_origin, 'http://localhost:1234'
 set :allow_methods, 'GET, POST'
 set :allow_headers, 'Content-Type, Authorization, Accept, X-Requested-With'
 
-medical_exam = MedicalExam.new('medical_exams')
+medical_exam = MedicalExam.new(ENV['TABLE_NAME'])
 
 get '/tests' do
   begin
@@ -57,20 +57,21 @@ post '/exams' do
     file.write(uploaded_file.read)
   end
 
-  sleep(5)
-
   begin
-    CsvJob.perform_async(file_full_path)
+    CsvJob.perform_async(file_full_path, ENV['TABLE_NAME'])
   rescue PG::Error => e
     status 400
     return {error: 'O arquivo contém valores inválidos'}.to_json
   end
 
-  {message: "Sucess", filePath: file_full_path}.to_json
+  {message: "Sucess"}.to_json
 end
 
-Rack::Handler::Puma.run(
-  Sinatra::Application,
-  Port: 3000,
-  Host: '0.0.0.0'
-)
+
+unless ENV['RACK_ENV'] == 'test'
+  Rack::Handler::Puma.run(
+    Sinatra::Application,
+    Port: 3000,
+    Host: '0.0.0.0'
+  )
+end

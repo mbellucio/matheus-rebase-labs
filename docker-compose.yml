@@ -5,11 +5,12 @@ services:
     working_dir: /app
     environment:
       REDIS_URL: redis://rebase_redis:6379
+      TABLE_NAME: medical_exams
     ports:
       - "3000:3000"
     volumes:
       - .:/app
-    command: bash -c 'bundle install && ruby db/db_init.rb && ruby api/server.rb'
+    command: bash -c 'bundle install --without test && ruby db/db_init.rb && ruby api/server.rb'
     depends_on:
       - db
 
@@ -59,8 +60,12 @@ services:
     image: ruby:3.3.0
     container_name: rebase_test
     working_dir: /app
+    environment:
+      RACK_ENV: test
+      REDIS_URL: redis://rebase_redis:6379
+      TABLE_NAME: medical_exams_test
     volumes:
       - .:/app
-    command: bash -c 'bundle install --without production && bundle exec rspec'
+    command: bash -c 'bundle install && bundle exec rspec'
     depends_on:
       - api
