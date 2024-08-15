@@ -256,3 +256,24 @@ curl -X POST http://localhost:3000/exams \
   "error": "O arquivo deve conter dados válidos"
 }
 ```
+
+# Rebase WebApp
+The Rebase WebApp is a front-end application that consumes from <br>
+the Rebase API in order to allow users to consult and add exams <br>
+from and to the database.
+
+## App pages and it's functionalities
+
+### Homepage
+Here the user can see a peek of all exams, and access to it's token <br>
+in order to use the detailed exams functionality.
+
+### Detailed Exams
+By inserting a valid token on the homepage search bar, the user <br>
+can see all details from all exams linked to the token provided.
+
+### Insert Exams
+In this page, the user can insert exams. 
+
+### Success feedback
+If the user inserted valid CSV data, the Webapp will inform him.
