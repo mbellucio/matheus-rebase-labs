@@ -51,6 +51,7 @@ post '/exams' do
   target_directory = './uploads/'
   target_filename = "#{SecureRandom.hex}.csv"
   file_full_path = "#{target_directory}#{target_filename}"
+  FileUtils.rm_rf(target_directory)
   FileUtils.mkdir_p(target_directory)
 
   File.open(file_full_path, 'wb') do |file|
