@@ -64,7 +64,7 @@ post '/exams' do
     return {error: 'O arquivo contém valores inválidos'}.to_json
   end
 
-  {message: "Sucess"}.to_json
+  {message: "Success"}.to_json
 end
 
 
