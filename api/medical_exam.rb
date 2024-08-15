@@ -73,8 +73,24 @@ class MedicalExam
     end
   end
 
+  def csv_is_valid?(file_path)
+    valid_headers = self.get_valid_csv_headers
+    rows = CSV.read(file_path, col_sep: ';')
+
+    return false unless rows.first.length == valid_headers.length
+
+    rows.first.all? { |header| valid_headers.include?(header) }
+  end
+
   def clear
     @conn.exec("TRUNCATE TABLE #{@table_name}")
+  end
+
+  private
+
+  def get_valid_csv_headers
+    rows = CSV.read("./db/data.csv", col_sep: ';')
+    rows.first
   end
 
 end

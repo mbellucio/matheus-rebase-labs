@@ -99,4 +99,18 @@ describe 'MedicalExam' do
       expect(result.length).to eq 4
     end
   end
+
+  context '.csv_is_valid?' do
+    it 'returns true when csv is valid' do
+      result = @medical_exam.csv_is_valid?("./spec/support/data.csv")
+
+      expect(result).to be true
+    end
+
+    it 'returns false when csv is invalid' do
+      result = @medical_exam.csv_is_valid?("./spec/support/invalid_data.csv")
+
+      expect(result).to be false
+    end
+  end
 end

@@ -641,11 +641,13 @@ const controlNavbarExams = function() {
     (0, _examsViewJsDefault.default).show();
     (0, _detailedExamsViewJsDefault.default).hide();
     (0, _insertExamsViewJsDefault.default).hide();
+    (0, _insertSuccessViewJsDefault.default).hide();
 };
 const controlNavbarInsertExams = function() {
     (0, _insertExamsViewJsDefault.default).show();
     (0, _examsViewJsDefault.default).hide();
     (0, _detailedExamsViewJsDefault.default).hide();
+    (0, _insertSuccessViewJsDefault.default).hide();
 };
 const controlPagination = function(gotoPage) {
     (0, _examsViewJsDefault.default).renderList(_modelJs.getExamsPage(gotoPage));
