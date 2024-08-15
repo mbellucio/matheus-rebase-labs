@@ -841,7 +841,7 @@ class View {
         this._parentElement.insertAdjacentHTML("afterBegin", markup);
     }
     renderError(error, msg) {
-        const markup = `<span>${msg} => (${error})</span>`;
+        const markup = `<span>${msg} => (${error.message})</span>`;
         this.clearError();
         this._alertElement.classList.remove("hidden");
         this._alertElement.insertAdjacentHTML("afterBegin", markup);

@@ -37,7 +37,7 @@ export default class View {
   }
 
   renderError(error, msg) {
-    const markup = `<span>${msg} => (${error})</span>`;
+    const markup = `<span>${msg} => (${error.message})</span>`;
 
     this.clearError();
     this._alertElement.classList.remove("hidden");
