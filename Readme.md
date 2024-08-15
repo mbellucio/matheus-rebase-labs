@@ -40,6 +40,7 @@ This will create all containers necessary for the application to work. <br>
 Wait for a couple seconds for Docker to setup everything. <br>
 
 You can access the web application on this URL: `http://localhost:1234`
+You can access the api on this URL: `http://localhost:3000/:endpoint`
 
 ## Tests
 
