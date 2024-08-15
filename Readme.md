@@ -1,7 +1,7 @@
 # Rebase Labs
 
 ## About
-This project was made during the Rebase Labs, by the Rebase company. <br>
+This project was made during the Rebase Labs, by [Rebase](https://www.rebase.com.br/). <br>
 As me and others came from a training/selection process that our core <br>
 framework was Rails, Rebase proposed a project without the usage of Rails. <br>
 
@@ -9,7 +9,7 @@ The project is simple:  reading from a CSV File we should create: a table on a d
 an api that expose some endpoints and a application that consumes those endpoints, <br>
 a frontend application that an user can interact with. Furthermore, the user should <br>
 be able to insert a CSV file into the database through the webapp application, and this <br>
-should be done using an async job. To end it all, all of that must be made using Docker.
+should be done using an async job. To end it all, all of that must integrated with Docker.
 
 Here's a peek of the Docker container setup to achieve the project goals: <br>
 
