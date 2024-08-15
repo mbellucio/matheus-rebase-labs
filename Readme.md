@@ -265,15 +265,19 @@ from and to the database.
 ## App pages and it's functionalities
 
 ### Homepage
+![image](https://github.com/user-attachments/assets/2ef3246d-43fd-492d-a675-dabb4e43b9eb)
 Here the user can see a peek of all exams, and access to it's token <br>
 in order to use the detailed exams functionality.
 
 ### Detailed Exams
+![image](https://github.com/user-attachments/assets/53d97537-b789-4ca1-b007-f37686f6e37a)
 By inserting a valid token on the homepage search bar, the user <br>
 can see all details from all exams linked to the token provided.
 
 ### Insert Exams
+![image](https://github.com/user-attachments/assets/b4d502b0-f6d8-4107-92b8-c99f105bd4dd)
 In this page, the user can insert exams. 
 
 ### Success feedback
+![image](https://github.com/user-attachments/assets/563868b0-42b1-4a34-b121-fd0271b4c8ed)
 If the user inserted valid CSV data, the Webapp will inform him.
