@@ -72,7 +72,6 @@ const controlPagination = function (gotoPage) {
 };
 
 const init = function () {
-  controlExams();
   controlPagination();
   navbarView.createRedirectButton();
   paginationView.addHandlerClick(controlPagination);
@@ -80,6 +79,7 @@ const init = function () {
   navbarView.addHandlerExamsClick(controlNavbarExams);
   navbarView.addHandlerInsertExamsClick(controlNavbarInsertExams);
   insertExamsView.addHandlerUpload(controlInsertExams);
+  controlExams();
 };
 
 init();

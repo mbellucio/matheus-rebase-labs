@@ -652,7 +652,6 @@ const controlPagination = function(gotoPage) {
     (0, _paginationViewJsDefault.default).render(_modelJs.state);
 };
 const init = function() {
-    controlExams();
     controlPagination();
     (0, _navbarViewJsDefault.default).createRedirectButton();
     (0, _paginationViewJsDefault.default).addHandlerClick(controlPagination);
@@ -660,6 +659,7 @@ const init = function() {
     (0, _navbarViewJsDefault.default).addHandlerExamsClick(controlNavbarExams);
     (0, _navbarViewJsDefault.default).addHandlerInsertExamsClick(controlNavbarInsertExams);
     (0, _insertExamsViewJsDefault.default).addHandlerUpload(controlInsertExams);
+    controlExams();
 };
 init();
 
