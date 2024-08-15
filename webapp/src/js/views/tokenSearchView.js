@@ -18,6 +18,10 @@ class ExamsView extends View {
       "Não foi possível encontrar um exame com este token";
   }
 
+  clearNotFound() {
+    this._notFound.innerHTML = "";
+  }
+
   addHandlerSearch(handler) {
     this._parentElement.addEventListener("submit", function (event) {
       event.preventDefault();

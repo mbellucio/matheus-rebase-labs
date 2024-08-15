@@ -619,6 +619,7 @@ const controlTokenSearch = async function() {
         if (_modelJs.state.tokenSearch.detailedExam.error) (0, _tokenSearchViewJsDefault.default).renderNotFound();
         (0, _detailedExamsViewJsDefault.default).renderExam(_modelJs.state.tokenSearch.detailedExam);
         (0, _tokenSearchViewJsDefault.default).clearInput((0, _detailedExamsViewJsDefault.default).section, (0, _examsViewJsDefault.default).section);
+        (0, _tokenSearchViewJsDefault.default).clearNotFound();
         (0, _detailedExamsViewJsDefault.default).show();
         (0, _examsViewJsDefault.default).hide();
         (0, _insertExamsViewJsDefault.default).hide();
@@ -910,6 +911,9 @@ class ExamsView extends (0, _viewJsDefault.default) {
     }
     renderNotFound() {
         this._notFound.innerHTML = "N\xe3o foi poss\xedvel encontrar um exame com este token";
+    }
+    clearNotFound() {
+        this._notFound.innerHTML = "";
     }
     addHandlerSearch(handler) {
         this._parentElement.addEventListener("submit", function(event) {

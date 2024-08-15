@@ -34,6 +34,7 @@ const controlTokenSearch = async function () {
 
     detailedExamsView.renderExam(model.state.tokenSearch.detailedExam);
     tokenSearchView.clearInput(detailedExamsView.section, examsView.section);
+    tokenSearchView.clearNotFound();
     detailedExamsView.show();
     examsView.hide();
     insertExamsView.hide();
