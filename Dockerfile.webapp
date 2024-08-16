@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY webapp/package*.json ./
 
-RUN npm install
-
 COPY webapp/ .
 
-CMD ["npm", "start"]
+CMD ["/bin/sh", "-c", "npm install && npm start"]

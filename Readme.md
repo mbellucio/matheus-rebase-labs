@@ -34,7 +34,7 @@ Here's a peek of the Docker container structure to achieve the project goals:
 
 Considering you already have Docker installed, on the root of this application: <br>
 
-`docker-compose up -d`
+`docker-compose up --build -d`
 
 This will create all containers necessary for the application to work. <br>
 Wait for a couple seconds for Docker to setup everything. <br>

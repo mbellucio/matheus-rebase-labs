@@ -665,7 +665,7 @@ const init = function() {
 };
 init();
 
-},{"./model.js":"Y4A21","./views/examsView.js":"esRgU","./views/paginationView.js":"6z7bi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/tokenSearchView.js":"fIqow","./views/detailedExamsView.js":"jKlmF","./views/navbarView.js":"xAXOZ","./views/insertExamsView.js":"5n0Tn","./views/insertSuccessView.js":"5B7KN"}],"Y4A21":[function(require,module,exports) {
+},{"./model.js":"Y4A21","./views/examsView.js":"esRgU","./views/paginationView.js":"6z7bi","./views/tokenSearchView.js":"fIqow","./views/detailedExamsView.js":"jKlmF","./views/navbarView.js":"xAXOZ","./views/insertExamsView.js":"5n0Tn","./views/insertSuccessView.js":"5B7KN","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"Y4A21":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
@@ -1002,7 +1002,7 @@ class NavbarView extends (0, _viewJsDefault.default) {
 }
 exports.default = new NavbarView();
 
-},{"./View.js":"5cUXS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../config.js":"k5Hzs"}],"5n0Tn":[function(require,module,exports) {
+},{"./View.js":"5cUXS","../config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5n0Tn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _viewJs = require("./View.js");
